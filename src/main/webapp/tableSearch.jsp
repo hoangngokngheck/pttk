@@ -240,6 +240,25 @@
             font-size: 13px;
             color: #666;
         }
+
+        .btn-order {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-order:hover {
+            background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -292,6 +311,7 @@
                             <th>Ngày đặt</th>
                             <th>Trạng thái bàn</th>
                             <th>Trạng thái order</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -332,6 +352,29 @@
                                             booking.getOrderStatus().equals("processing") ? "Đang xử lý" : 
                                             booking.getOrderStatus() %>
                                     </span>
+                                </td>
+                                <td>
+                                    <% 
+                                    // Chỉ cho phép đặt món nếu:
+                                    // 1. User là customer và là chủ booking này
+                                    // 2. Hoặc user là nhân viên/manager
+                                    boolean canOrder = false;
+                                    if (member != null) {
+                                        if (member.isCustomer() && member.getId() == booking.getCustomerId()) {
+                                            canOrder = true;
+                                        } else if (member.isManager() || member.isSalesStaff()) {
+                                            canOrder = true;
+                                        }
+                                    }
+                                    %>
+                                    <% if (canOrder) { %>
+                                        <a href="order?setBooking=true&orderId=<%= booking.getOrderId() %>&tableId=<%= booking.getTableId() %>" 
+                                           class="btn-order">
+                                            🍽️ Đặt món
+                                        </a>
+                                    <% } else { %>
+                                        <span style="color: #999; font-size: 13px;">-</span>
+                                    <% } %>
                                 </td>
                             </tr>
                         <% } %>

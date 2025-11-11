@@ -39,6 +39,30 @@ public class OrderServlet extends HttpServlet {
             return;
         }
 
+        // Xử lý set booking từ trang tra cứu
+        String setBooking = request.getParameter("setBooking");
+        if ("true".equals(setBooking)) {
+            String orderIdParam = request.getParameter("orderId");
+            String tableIdParam = request.getParameter("tableId");
+            
+            if (orderIdParam != null && tableIdParam != null) {
+                try {
+                    int orderId = Integer.parseInt(orderIdParam);
+                    int tableId = Integer.parseInt(tableIdParam);
+                    
+                    // Set vào session
+                    session.setAttribute("currentOrderId", orderId);
+                    session.setAttribute("currentTableId", tableId);
+                    
+                    // Redirect về order để load lại
+                    response.sendRedirect("order");
+                    return;
+                } catch (NumberFormatException e) {
+                    // Ignore
+                }
+            }
+        }
+
         // Kiểm tra đã đặt bàn chưa
         Integer currentOrderId = (Integer) session.getAttribute("currentOrderId");
         Integer currentTableId = (Integer) session.getAttribute("currentTableId");
