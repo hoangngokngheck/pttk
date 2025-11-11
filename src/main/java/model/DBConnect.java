@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnect {
     // Sửa user/password cho đúng máy của Hoàng
-    private static final String URL = "jdbc:mysql://localhost:3306/pttk?useSSL=false&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/PTTK?useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASSWORD = "552004";
 
